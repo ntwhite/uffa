@@ -8,7 +8,7 @@ from pmdarima.arima.utils import ndiffs, nsdiffs
 from random import seed
 from random import random
 from tabulate import tabulate
-seed(1)
+seed(42)
 
 
 class uffa_stack(object):
@@ -23,7 +23,14 @@ class uffa_stack(object):
 
 	def is_number(self):
 		'''
-		Asserts that all the values in the provided data are a float or int
+		Summary Line: Asserts that all the values in the provided data are a float or int
+	
+		Exteneded Description: intended as a simple type error catch function to be used in the runner_func
+
+		Parameters:  self.data
+
+		Returns: a boolean value 
+
 		'''
 		boolean = True
 
@@ -37,17 +44,26 @@ class uffa_stack(object):
 
 	def length_feas(self):
 		'''
-		Asserts that enough data has been provided to be useful, and that the slit param and the series length make sense
+		Summary Line: Asserts that enough data has been provided to be useful, and that the split param and the series length make sense
+
+		Extended Description: this function measures the length of the self.data object and the value of the self.split_param object.
+		If the self.data object is longer than 9 observations AND the self.split_param value is less than the calculated length value, then it is technically possible to run forecasting fuctions.  However that does not mean this is the only quantitative threashold to clear before it comes usable.
+
+		Params:  self.data
+			 self.split_param
+
+		Returns:  a boolean value 
+
 		'''
 		length = len(self.data)
-		feasibility = True
+		boolean  = True
 
 		if length > 9 and self.split_param < length:
 			pass
 		else:
-			feasibility = False
+			boolean = False
 
-		return feasibility
+		return boolean
 
 	def train_test_split(self):
 		'''
@@ -195,8 +211,9 @@ class uffa_stack(object):
 	def runner_func(self):
 		train, test = self.train_test_split()
 		pers_model_results = self.persistence_model(train,test)
-		el_rw_results = self.elementary_rw(train,test)
-		el_rw_rm = self.elementary_rw_nm(train,test)
+		## Hold out bad stuff
+		#el_rw_results = self.elementary_rw(train,test)
+		#el_rw_rm = self.elementary_rw_nm(train,test)
 		auto_am_results = self.auto_pmd(train,test)
 
 		report = self.report_creation(test, pers_model_results, el_rw_results, el_rw_rm, auto_am_results)
@@ -206,5 +223,3 @@ class uffa_stack(object):
 		self.viz_train_test_predictions(train,test,auto_am_results)
 		plt.clf()
 		self.viz_all_forecast_models(test, pers_model_results, auto_am_results)
-		#print(test)
-		#print(tabulate(report, headers = 'keys', tablefmt = 'psql'))
