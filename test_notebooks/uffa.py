@@ -88,8 +88,8 @@ class uffa_stack(object):
 			self.split_param : the split_param created on class instantitation
 
 		Returns:
-			train : the training dataset
-			test  : the test dataset
+			train (array) : the training dataset
+			test (array) : the test dataset
 	
 		'''
 		length = len(self.data)
@@ -102,7 +102,17 @@ class uffa_stack(object):
 
 	def persistence_model(self, train, test):
 		'''
-		produces a persistance model
+		Summary Line: produces a persistance model
+
+		Extended Description: a persistance model simply predicts t-1 for any given t, assuming t = time.  This is also commonly called a "naive forecast"
+
+		Parameters:
+			train (array) : the training dataset 
+			test (array) : the test dataset
+
+		Returns
+			predictions (array) : the predictions produced by the naive algorithim
+
 		'''
 		predictions = list()  # need more eval
 		history = train[-1]
@@ -118,7 +128,17 @@ class uffa_stack(object):
 
 	def elementary_rw(self, train, test):
 		'''
-    	create an elementary rw model where step move sizes have an equal probability of moving up or down, and step size equals the standard deviation of the training set
+    		Summary Line: create an elementary rw model where step move sizes have an equal probability of moving up or down,
+		and step size equals the standard deviation of the training set
+
+		Extended Description:  This idea was dumb, and will probably be supressed from the runner function
+
+		Parameters:
+			train (array) : the training dataset
+			test (array) : the test dataset
+
+		Returns:
+			predictions (array) : the predictions produced by the random_walk aglo
 		'''
 		seed(1)
 		stand_dev = np.std(train)
@@ -136,7 +156,18 @@ class uffa_stack(object):
 
 	def elementary_rw_nm(self,train,test):
 		'''
-		create an elementary rw model where step move sizes have an equal probability of moving up or down, and step size equals the standard deviation of the training set
+		Summary Line: create an elementary rw model where step move sizes have an equal probability of moving up or down or staying the same,
+		and step size equals the standard deviation of the training set
+
+		Extended Description:  This idea was dumb and will probably be supressed from the runner function
+
+		Parameters:
+			train (array) : the trainig dataset
+			test (array) : the test dataset
+
+		Returns:
+			predictions (array) : gthe predictions produced by the random_walk_median algo
+
 		'''
 		seed(1)
 		stand_dev = np.std(train)
@@ -160,6 +191,12 @@ class uffa_stack(object):
 		return predictions
 
 	def auto_pmd(self,train,test):
+		'''
+		Summary Line: Create an auto_arima
+
+		Extended
+
+		'''
 		little_d = ndiffs(train, test = 'kpss')
 		big_D = nsdiffs(train, m = 52, max_D = 12, test = 'ocsb')
 
