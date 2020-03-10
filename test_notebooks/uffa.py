@@ -14,6 +14,15 @@ seed(42)
 class uffa_stack(object):
 
 	def __init__(self, data, split_param):
+		'''
+		Summary Line: The consructor for the uffa_stack class
+
+		Parameters:
+			data : the univariate series data to be analyzed
+			split_param : the training/test set split parameter
+
+		'''
+
 		self.data = np.array(data)
 		self.split_param = int(split_param)
 		self.model_name_p = 'persistence_model'
@@ -27,9 +36,11 @@ class uffa_stack(object):
 	
 		Exteneded Description: intended as a simple type error catch function to be used in the runner_func
 
-		Parameters:  self.data
+		Parameters:  
+			self.data :the univariate data series passed in on class instantitiation
 
-		Returns: a boolean value 
+		Returns:
+			boolean : a boolean value indicating if the series contains all numerical values
 
 		'''
 		boolean = True
@@ -49,11 +60,12 @@ class uffa_stack(object):
 		Extended Description: this function measures the length of the self.data object and the value of the self.split_param object.
 		If the self.data object is longer than 9 observations AND the self.split_param value is less than the calculated length value, then it is technically possible to run forecasting fuctions.  However that does not mean this is the only quantitative threashold to clear before it comes usable.
 
-		Params:  self.data
-			 self.split_param
+		Parameters: 
+			 self.data : the univariate data series passed in on class instantiation
+			 self.split_param : the train/test set split param passed in on class instantiation
 
-		Returns:  a boolean value 
-
+		Returns:
+			boolean =  a boolean value indicating wheather the split_param value makes sense giving the data series
 		'''
 		length = len(self.data)
 		boolean  = True
@@ -67,7 +79,18 @@ class uffa_stack(object):
 
 	def train_test_split(self):
 		'''
-		splits data series based off split_param provided at class instantiation
+		Summary Line: splits data series based off split_param provided at class instantiation
+
+		Extended Description: only does a train/test split; but thats all this package is intented to facilitiate.
+
+		Parameters: 
+			self.data : the data object created on class instantiation
+			self.split_param : the split_param created on class instantitation
+
+		Returns:
+			train : the training dataset
+			test  : the test dataset
+	
 		'''
 		length = len(self.data)
 		val = length - self.split_param
